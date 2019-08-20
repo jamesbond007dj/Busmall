@@ -1,7 +1,7 @@
 
 body  {
 
-    background-color: rgb(204, 241, 253);
+    
     margin : auto;
     width: 960px;
     text-align: center;
@@ -86,6 +86,7 @@ h1 {
     color: rgb(156, 27, 27);
     text-align: center;
     text-shadow: 5px 5px 10px rgb(17, 46, 65);
+    background-color:rgb(204, 241, 253);
 }
 
 h2 {

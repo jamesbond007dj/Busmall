@@ -96,3 +96,142 @@ function generateList(){
     allProducts[i].renderResults();
   }
 }
+
+'use strict';
+
+
+
+var ctx = document.getElementById('chart').getContext('2d');
+
+
+
+var allTheData = [
+
+  {
+
+    name: "John",
+
+    clicks: 17,
+
+    views: 100,
+
+  },
+
+  {
+
+    name: "Cathy",
+
+    clicks: 21,
+
+    views: 77,
+
+  },
+
+  {
+
+    name: "Zach",
+
+    clicks: 13,
+
+    views: 111,
+
+  },
+
+  {
+
+    name: "Allie",
+
+    clicks: 54,
+
+    views: 71,
+
+  },
+
+];
+
+
+
+var labels = [];
+
+var data1 = [];
+
+var data2 = [];
+
+var data3 = [];
+
+var colors = ['black', 'ivory', 'blue', 'red'];
+
+
+
+for (var i = 0; i < allTheData.length; i++) {
+
+  labels.push(allTheData[i].name);
+
+  data1.push(allTheData[i].clicks);
+  data2.push(allTheData[i].views)
+  data3.push(allTheData[i].views+ allTheData[i].clicks)  
+}
+
+
+
+makeChart(data1, data2, labels);
+
+
+
+function makeChart(data, labels) {
+
+
+
+  var chart = new Chart(ctx, {
+
+    
+
+    type: 'line',
+
+
+
+      data: {
+
+      labels: labels,
+
+      datasets: [{
+
+        label: 'votes',
+
+        backgroundColor: 'rgb(155, 09, 000)',
+
+        borderColor: 'rgb(255, 99, 132)',
+
+        data: data1,
+
+        
+      },
+    
+      {label: 'votesdotes',
+
+      backgroundColor: 'rgb(205, 49, 100)',
+
+      borderColor: 'rgb(205, 49, 132)',
+
+      data: data2,},
+
+    
+      {label: 'sum',
+
+      backgroundColor: 'rgb(005, 09, 100)',
+
+      borderColor: 'rgb(005, 49, 132)',
+
+      data: data3,}
+    
+    ]
+
+    },
+
+    options: {}
+
+  });
+
+
+
+}
