@@ -58,7 +58,7 @@ img {
     object-fit:scale-down;
     text-shadow: 5px;
     width:300px;
-    opacity: .7;
+    opacity: .5;
     margin: 2px;
     box-shadow: 5px 5px 5px rgb(3, 8, 19);
 }
@@ -73,7 +73,7 @@ img:hover {
     nav-index: auto;
     box-shadow: 5px 5px 5px rgb(86, 136, 230);
     transition-delay: 0.5s;
-    transition: 1s all;
+    transition: 2s all;
    
    
 
@@ -93,7 +93,7 @@ h2 {
     font-size:40px;
     color: rgb(190, 17, 17);
     text-align: center;
-    text-shadow: 3px 3px 3px rgb(17, 46, 65);
+    text-shadow: 3px 3px 10px rgb(17, 46, 65);
 }
 
 h3 {
