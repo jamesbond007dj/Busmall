@@ -1,137 +1,238 @@
-var productimages = [
-    '/assets/images/bag.jpg', 
-    '/assets/images/banana.jpg', 
-    '/assets/images/bathroom.jpg', 
-    '/assets/images/boots.jpg', 
-    '/assets/images/breakfast.jpg', 
-    '/assets/images/bubblegum.jpg', 
-    '/assets/images/chair.jpg', 
-    '/assets/images/cthulhu.jpg', 
-    '/assets/images/dog-duck.jpg', 
-    '/assets/images/dragon.jpg', 
-    '/assets/images/pen.jpg', 
-    '/assets/images/pet-sweep.jpg', 
-    '/assets/images/scissors.jpg', 
-    '/assets/images/shark.jpg', 
-    '/assets/images/sweep.png', 
-    '/assets/images/tauntaun.jpg',
-    '/assets/images/unicorn.jpg',
-    '/assets/images/usb.gif', 
-    '/assets/images/water-can.jpg', 
-    '/assets/images/wine-glass.jpg', ];
-
-    var productimages  = ['bag.jpg', 'banana.jpg', 'bathroom.jpg',
-     'boots.jpg', 'breakfast.jpg', 'chair.jpg', 'cthulhu.jpg',
-      'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg',
-       'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg',
-       'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
-
-var recentRandomProduct = [];
-var allProducts =[];
-
 'use strict';
 
-var productOneEl = document.getElementById('productOne');
-var productTwoEl = document.getElementById('productTwo');
-var productThreeEl = document.getElementById('productThree');
-var productContainerEl = document.getElementById ('productContainer');
-var votesRemaining = 0; 
-var ulEl = document.getElementById('list');
+var imageUrls = [
+  '/assets/imgs/bag.jpg',
+  '/assets/imgs/banana.jpg',
+  '/assets/imgs/bathroom.jpg',
+  '/assets/imgs/boots.jpg',
+  '/assets/imgs/breakfast.jpg',
+  '/assets/imgs/bubblegum.jpg',
+  '/assets/imgs/chair.jpg',
+  '/assets/imgs/cthulhu.jpg',
+  '/assets/imgs/dog-duck.jpg',
+  '/assets/imgs/dragon.jpg',
+  '/assets/imgs/pen.jpg',
+  '/assets/imgs/pet-sweep.jpg',
+  '/assets/imgs/scissors.jpg',
+  '/assets/imgs/shark.jpg',
+  '/assets/imgs/sweep.png',
+  '/assets/imgs/tauntaun.jpg',
+  '/assets/imgs/unicorn.jpg',
+  '/assets/imgs/usb.gif',
+  '/assets/imgs/water-can.jpg',
+  '/assets/imgs/wine-glass.jpg'
+];
 
-var images  = ['bag.jpg', 'banana.jpg', 'bathroom.jpg',
-     'boots.jpg', 'breakfast.jpg', 'chair.jpg', 'cthulhu.jpg',
-      'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg',
-       'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg',
-       'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
+var imageNames = [
+  'R2D2 Luggage',
+  'Banana Cutter',
+  'Bathroom Tablet Stand',
+  'Toeless Boots',
+  'All-in-One Breakfast Maker',
+  'Meatball Bubblegum',
+  'Hump Chair',
+  'Posable Cthulhu',
+  'Dog-Duck',
+  'Delicious Dragon Meat',
+  'Utensil Pen Caps',
+  'About-Time Pet Sweep',
+  'Pizza Scissors',
+  'Shark Simulator',
+  'Make-em-Useful Baby Sweep',
+  'Life-like Taun Taun',
+  'Tasty Unicorn Meat',
+  'Not Creepy Tentacle USB',
+  'Very Effective Watering Can',
+  'Posh Wine Glass'
+];
 
-var recentRandomProducts = [];
-var allProducts = [];
+var imageSection = document.getElementById('image_banner');
+var repeatCheckArray = [];
+var scoresArray = [];
+var numberOfLoops = 0;
 
+function Images( name, url ) {
+  this.name = name;
+  this.src = url;
+  this.votes = 0;
+  this.shown = 0;
+  Images.list.push(this);
+}
+Images.list = [];
 
-function Products (name){
-        this.name = name.split('.')[0];
-        this.filepath = `/assets/images/${name}`;
-        this.votes = 0;
-        this.views = 0;
-        allProducts.push(this);
-    }
-   
-
-for (var i = 0; i < images.length; i++) {
-    new Products (images[i]);
+function createImages() {
+  for (var i = 0; i < imageUrls.length; i++){
+    new Images (imageNames[i], imageUrls[i]);
+  }
 }
 
-function render () {
-    var randomProducts = getUniqueProduct();
-    allProducts[randomProducts].views++;
-    productOneEl.src = allProducts[randomProducts].filepath;
-    productOneEl.alt = allProducts[randomProducts].name;
-    productOneEl.title = allProducts[randomProducts].name;
+function chooseRandomImage(){
+  var randomImage = Math.floor(Math.random() * Images.list.length);
+  return Images.list[randomImage];
+}
 
+function renderRandomImage(){
+  removePreviousImages();
+  if (numberOfLoops < 25){
+    for (var i = 0; i < 3; i++){
+      var randomImage = chooseRandomImage();
+      while(repeatCheckArray.includes(randomImage)){
+        randomImage = chooseRandomImage();
+      }
+      createImageElement(randomImage);
+      scoresArray[i] = randomImage;
+      randomImage.shown++;
+      repeatCheckArray.push(randomImage);
+    }
+    removeThreePreviousImages();
+    numberOfLoops++;
+  }
+  else {
+    // listTotals();
+    makeChart();
+  }
+}
 
-    randomProducts = getUniqueProduct();
-    allProducts[randomProducts].views++;
-    productTwoEl.src = allProducts[randomProducts].filepath;
-    productTwoEl.alt = allProducts[randomProducts].name;
-    productTwoEl.title = allProducts[randomProducts].name;
+function createImageElement(randomImage){
+  var newFigure = document.createElement('figure');
+  var newImg = document.createElement('img');
+  var newCaption = document.createElement('figcaption');
+  
+  newImg.src = randomImage.src;
+  newImg.alt = randomImage.name;
+  newCaption.textContent = randomImage.name;
+  newFigure.appendChild(newImg);
+  newFigure.appendChild(newCaption);
+  imageSection.appendChild(newFigure);
+}
 
-    randomProducts = getUniqueProduct(); 
-    allProducts[randomProducts].views++;
-    productThreeEl.src = allProducts[randomProducts].filepath;
-    productThreeEl.alt = allProducts[randomProducts].name;
-    productThreeEl.title = allProducts[randomProducts].name;
+function removeThreePreviousImages(){
+  if(repeatCheckArray.length >= 6){
+    repeatCheckArray.shift();
+    repeatCheckArray.shift();
+    repeatCheckArray.shift();
+  }
+}
 
+function imageVotedFor(e){
+  var clicked = e.target.alt;
+  for (var i = 0; i < Images.list.length; i++){
+    if (Images.list[i].name === clicked){
+      Images.list[i].votes++;
+    }
+  }
+  renderRandomImage();
+}
+
+function removePreviousImages (){
+  while (imageSection.firstChild){
+    imageSection.removeChild(imageSection.firstChild);
+  }
+}
+
+function totalVotesToArray(){
+  var totalsArray = [];
+  for(var i = 0; i < Images.list.length; i++){
+    totalsArray.push(Images.list[i].votes);
+  }
+  return totalsArray;
+}
+function totalViewsToArray(){
+  var totalsArray = [];
+  for(var i = 0; i < Images.list.length; i++){
+    totalsArray.push(Images.list[i].shown);
+  }
+  return totalsArray;
+}
+function percentagePickedToArray(){
+  var totalsArray = [];
+  for(var i = 0; i < Images.list.length; i++){
+    var percent = Images.list[i].votes / Images.list[i].shown * 100;
+    totalsArray.push(percent);
+  }
+  return totalsArray;
+}
+
+function listTotals(){
+  var elUl = document.createElement('ul');
+  elUl.textContent = 'Totals:';
+  for (var j = 0; j < Images.list.length; j++){
+    var elLi = document.createElement('li');
+    elLi.textContent = Images.list[j].votes + ' votes for the ' + Images.list[j].name;
+    elUl.appendChild(elLi);
+  }
+  imageSection.appendChild(elUl);
+}
+
+function createChart(){
+  var elH2 = document.getElementsByTagName('h2')[0];
+  elH2.textContent = 'Total Votes Compared to Times Shown Chart';
+  var elChart = document.createElement('canvas');
+  elChart.id = 'totals_chart';
+  imageSection.appendChild(elChart);
+  
+  //code from https://www.chartjs.org/docs/latest/getting-started/
+  var ctx = document.getElementById('totals_chart').getContext('2d');
+  var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'bar',
     
+    // The data for our dataset
+    data: {
+      labels: imageNames,
+      datasets: [
+        {
+          label: 'Total Votes',
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgb(255, 99, 132)',
+          data: totalVotesToArray(),
+          yAxisID: 'left-y-axis',
+        },
+        {
+          label: 'Total Times Shown',
+          backgroundColor: 'blue',
+          borderColor: 'rgb(255, 99, 132)',
+          data: totalViewsToArray(),
+          yAxisID: 'left-y-axis',
+        },
+        {
+          label: 'Percentage Chosen',
+          backgroundColor: 'goldenrod',
+          data: percentagePickedToArray(),
+          type: 'bar',
+          yAxisID: 'right-y-axis',
+        },
+      ]
+    },
+    
+    // Configuration options go here
+    options: {
+      scales: {
+        yAxes: [{
+          id: 'left-y-axis',
+          type: 'linear',
+          position: 'left',
+          scaleLabel: {
+            display: true,
+            labelString: 'Number of Votes',
+          }
+        }, {
+          id: 'right-y-axis',
+          type: 'linear',
+          position: 'right',
+          scaleLabel: {
+            display: true,
+            labelString: 'Percentage Chosen',
+          },
+          ticks: {
+            max: 100,
+          }
+        }]
+      }
+    }
+  });
 }
 
-function randomNumber (min, max) {
-    return Math.floor(Math.random()*(max -min+1))+min;
-}
-
-function getUniqueProduct(){
-    var randomIndex = randomNumber(0, allProducts.length-1);
-    while(recentRandomProduct.includes(randomIndex)){ 
-    randomIndex= randomNumber(0, allProducts.length-1);
-    }
-
-    if(recentRandomProduct.length > 5) {
-        recentRandomProduct.shift();
-    }
-    recentRandomProduct.push(randomIndex);
-
-    return randomIndex;
-
-}
-
-function mouseClick () {
-    var chosenProduct = event.target.title;
-    votesRemaining++;
-
-    for ( var i = 0; i < allProducts.length; i++){
-        if(allProducts[i].name === chosenProduct){
-            allProducts[i].votes++;
-        }
-    }
-
-    if (votesRemaining > 24){
-        productContainerEl.removeEventListener('click', mouseClick, true);
-        generateList();
-    }
-    render ();
-}
-
-productContainerEl.addEventListener('click', mouseClick, true);
-
-render();
-
-Products.prototype.renderResults = function (){
-    var liEl = document.createElement('li');
-    liEl.textContent = `${this.selections} votes for ${this.name}`;
-    ulEl.appendChild(liEl);
-};
-
-function generateList () {
-    for (var i=0; i<allProducts.length; i++){
-        allProducts[i].renderResults();
-    }
-}
+imageSection.addEventListener('click', imageVotedFor);
+createImages();
+renderRandomImage();

@@ -95,47 +95,32 @@ function generateList(){
   for(var i =0; i < allProducts.length; i++){
     allProducts[i].renderResults();
   }
-}
 
+    makeChart();
+  }
 
 var ctx = document.getElementById('chart').getContext('2d');
-
-var allTheData = [
-  {
-    name: "John",
-    clicks: 17,
-    views: 100,
-  },
-  {
-    name: "Cathy",
-    clicks: 21,
-    views: 77,
-  },
-  {
-    name: "Zach",
-    clicks: 13,
-    views: 111,
-  },
-  {
-    name: "Allie",
-    clicks: 54,
-    views: 71,
-  },
-];
 
 var labels = [];
 var data1 = [];
 var data2 = [];
 var data3 = [];
-var colors = ['black', 'ivory', 'blue', 'red'];
+var colors = [];
 
-for (var i = 0; i < images.length; i++) {
+for (var i = 0; i < allProducts.length; i++) {
+  consolog(pictures[images])
  
-  labels.push(images[i].name);
+  labels.push(allProducts[i].name);
   data1.push(images[i].clicks);
   data2.push(images[i].views);
   data3.push(images[i].clicks+images[i].views);
+
+var randomColorCode = '#' + Math.floor(Math.random()*16777215).toString(16);
+colors.push(randomColorCode);
 }
+
+
+
 
 
 makeChart(labels, data1, data2, data3);
@@ -160,33 +145,42 @@ function makeChart(data, labels) {
         
       datasets: [{
 
-        label: 'FILBACK',
+        label: 'VOTES',
 
         backgroundColor: 'rgb(155, 09, 000)',
 
         borderColor: 'rgb(255, 99, 132)',
 
         data: data1,
+        
 
         
       },
     
-      {label: 'PP TWINES',
+      {label: 'VIEWS',
 
       backgroundColor: 'rgb(205, 49, 100)',
 
       borderColor: 'rgb(205, 49, 132)',
 
-      data: data2,},
+      data: data2,
+
+         
+    
+    },
+      
 
     
-      {label: 'PP WOVEN FABRICS',
+      {label: 'RATIO',
 
       backgroundColor: 'rgb(005, 09, 100)',
 
       borderColor: 'rgb(005, 49, 132)',
 
-      data: data3,}
+      data: data3,
+      
+    
+    }
     
     ]
 
