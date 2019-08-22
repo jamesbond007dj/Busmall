@@ -78,7 +78,9 @@ function handleClick(){
   if (votesRemaining > 24){
     productContainerEl.removeEventListener('click', handleClick, true);
     generateList();
-    generateChart();
+    blahBlahBlah ();
+    makeChart(data1, data2, data3,  labels);
+
     productValue();
   }
   render();
@@ -128,21 +130,19 @@ var data2 = [];
 var data3 = [];
 var colors = ['black', 'ivory', 'blue', 'red'];
 
+function blahBlahBlah() {
 for (var i = 0; i < allProducts.length; i++) {
  
   labels.push(allProducts[i].name);
-  data1.push(allProducts[i].clicks);
+  data1.push(allProducts[i].votes);
   data2.push(allProducts[i].views);
-  data3.push(allProducts[i].clicks+allProducts[i].views);
+  data3.push(100*allProducts[i].votes/allProducts[i].views);
 }
 
-storageFinder();
-
-makeChart(labels, data1, data2, data3);
+}
 
 
-
-function makeChart(data, labels) {
+function makeChart(data1, data2, data3, labels) {
 
   var ctx = document.getElementById('chart').getContext('2d');
 
@@ -150,7 +150,7 @@ function makeChart(data, labels) {
 
     
 
-    type: 'bar',
+    type: 'line',
 
 
 
@@ -180,11 +180,11 @@ function makeChart(data, labels) {
       data: data2,},
 
     
-      {label: 'RATIO',
+      {label: 'TOP CONSEDIRATED PRODUCTS',
 
-      backgroundColor: 'rgb(005, 09, 100)',
+      backgroundColor: 'rgb(105, 09, 100)',
 
-      borderColor: 'rgb(005, 49, 132)',
+      borderColor: 'rgb(105, 49, 132)',
 
       data: data3,}
     
@@ -199,4 +199,3 @@ function makeChart(data, labels) {
 
 
 }
-
