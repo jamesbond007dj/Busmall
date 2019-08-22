@@ -78,9 +78,13 @@ function handleClick(){
   if (votesRemaining > 24){
     productContainerEl.removeEventListener('click', handleClick, true);
     generateList();
+    generateChart();
+    productValue();
   }
   render();
 }
+
+
 productContainerEl.addEventListener('click', handleClick, true);
 
 render();
@@ -95,33 +99,44 @@ function generateList(){
   for(var i =0; i < allProducts.length; i++){
     allProducts[i].renderResults();
   }
+}
 
-    makeChart();
+function productValue () { 
+  var objectString = JSON.stringify(allProducts);
+  localStorage.setItem('product-key', objectString);
+  
+}
+
+function storageFinder () {
+  var storeProducts = localStorage.getItem('product-key');
+  if(localStorage.length === 0){
+    for (var i=0; i< images.length; i++){
+   new Products(images[i]);
+    }
+  } else {
+    var parseProduct = JSON.parse(storeProducts);
+    allProducts = parseProduct;
   }
-
-var ctx = document.getElementById('chart').getContext('2d');
-
-var labels = [];
-var data1 = [];
-var data2 = [];
-var data3 = [];
-var colors = [];
-
-for (var i = 0; i < allProducts.length; i++) {
-  consolog(pictures[images])
- 
-  labels.push(allProducts[i].name);
-  data1.push(images[i].clicks);
-  data2.push(images[i].views);
-  data3.push(images[i].clicks+images[i].views);
-
-var randomColorCode = '#' + Math.floor(Math.random()*16777215).toString(16);
-colors.push(randomColorCode);
 }
 
 
 
 
+var labels = [];
+var data1 = [];
+var data2 = [];
+var data3 = [];
+var colors = ['black', 'ivory', 'blue', 'red'];
+
+for (var i = 0; i < allProducts.length; i++) {
+ 
+  labels.push(allProducts[i].name);
+  data1.push(allProducts[i].clicks);
+  data2.push(allProducts[i].views);
+  data3.push(allProducts[i].clicks+allProducts[i].views);
+}
+
+storageFinder();
 
 makeChart(labels, data1, data2, data3);
 
@@ -129,7 +144,7 @@ makeChart(labels, data1, data2, data3);
 
 function makeChart(data, labels) {
 
-
+  var ctx = document.getElementById('chart').getContext('2d');
 
   var chart = new Chart(ctx, {
 
@@ -152,7 +167,6 @@ function makeChart(data, labels) {
         borderColor: 'rgb(255, 99, 132)',
 
         data: data1,
-        
 
         
       },
@@ -163,12 +177,7 @@ function makeChart(data, labels) {
 
       borderColor: 'rgb(205, 49, 132)',
 
-      data: data2,
-
-         
-    
-    },
-      
+      data: data2,},
 
     
       {label: 'RATIO',
@@ -177,10 +186,7 @@ function makeChart(data, labels) {
 
       borderColor: 'rgb(005, 49, 132)',
 
-      data: data3,
-      
-    
-    }
+      data: data3,}
     
     ]
 
@@ -193,3 +199,4 @@ function makeChart(data, labels) {
 
 
 }
+
