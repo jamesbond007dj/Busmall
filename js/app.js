@@ -78,9 +78,15 @@ function handleClick(){
   if (votesRemaining > 24){
     productContainerEl.removeEventListener('click', handleClick, true);
     generateList();
+    blahBlahBlah ();
+    makeChart(data1, data2, data3,  labels);
+
+    productValue();
   }
   render();
 }
+
+
 productContainerEl.addEventListener('click', handleClick, true);
 
 render();
@@ -97,31 +103,26 @@ function generateList(){
   }
 }
 
+function productValue () { 
+  var objectString = JSON.stringify(allProducts);
+  localStorage.setItem('product-key', objectString);
+  
+}
 
-var ctx = document.getElementById('chart').getContext('2d');
+function storageFinder () {
+  var storeProducts = localStorage.getItem('product-key');
+  if(localStorage.length === 0){
+    for (var i=0; i< images.length; i++){
+   new Products(images[i]);
+    }
+  } else {
+    var parseProduct = JSON.parse(storeProducts);
+    allProducts = parseProduct;
+  }
+}
 
-var allTheData = [
-  {
-    name: "John",
-    clicks: 17,
-    views: 100,
-  },
-  {
-    name: "Cathy",
-    clicks: 21,
-    views: 77,
-  },
-  {
-    name: "Zach",
-    clicks: 13,
-    views: 111,
-  },
-  {
-    name: "Allie",
-    clicks: 54,
-    views: 71,
-  },
-];
+
+
 
 var labels = [];
 var data1 = [];
@@ -129,28 +130,27 @@ var data2 = [];
 var data3 = [];
 var colors = ['black', 'ivory', 'blue', 'red'];
 
-for (var i = 0; i < images.length; i++) {
+function blahBlahBlah() {
+for (var i = 0; i < allProducts.length; i++) {
  
-  labels.push(images[i].name);
-  data1.push(images[i].clicks);
-  data2.push(images[i].views);
-  data3.push(images[i].clicks+images[i].views);
+  labels.push(allProducts[i].name);
+  data1.push(allProducts[i].votes);
+  data2.push(allProducts[i].views);
+  data3.push(100*allProducts[i].votes/allProducts[i].views);
+}
+
 }
 
 
-makeChart(labels, data1, data2, data3);
+function makeChart(data1, data2, data3, labels) {
 
-
-
-function makeChart(data, labels) {
-
-
+  var ctx = document.getElementById('chart').getContext('2d');
 
   var chart = new Chart(ctx, {
 
     
 
-    type: 'bar',
+    type: 'line',
 
 
 
@@ -160,7 +160,7 @@ function makeChart(data, labels) {
         
       datasets: [{
 
-        label: 'FILBACK',
+        label: 'VOTES',
 
         backgroundColor: 'rgb(155, 09, 000)',
 
@@ -171,7 +171,7 @@ function makeChart(data, labels) {
         
       },
     
-      {label: 'PP TWINES',
+      {label: 'VIEWS',
 
       backgroundColor: 'rgb(205, 49, 100)',
 
@@ -180,11 +180,11 @@ function makeChart(data, labels) {
       data: data2,},
 
     
-      {label: 'PP WOVEN FABRICS',
+      {label: 'TOP CONSEDIRATED PRODUCTS',
 
-      backgroundColor: 'rgb(005, 09, 100)',
+      backgroundColor: 'rgb(105, 09, 100)',
 
-      borderColor: 'rgb(005, 49, 132)',
+      borderColor: 'rgb(105, 49, 132)',
 
       data: data3,}
     
